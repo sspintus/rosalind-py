@@ -166,3 +166,19 @@ def rna2aa(rna_seq, code_table):
             break
         aa_seq+=aa
     return aa_seq
+
+def substring(data_file):
+    f=open(data_file)
+    target=f.readline().rstrip()
+    query= f.readline().rstrip()
+    f.close()
+    loc=[]
+    for shift in range(0,len(target)-len(query)):
+        is_match=True
+        for i in range(0,len(query)):
+            if(query[i] != target[i+shift]):
+                is_match=False
+                break
+        if(is_match):
+            loc.insert(len(loc),str(shift+1)) #0-based to 1-based
+    return " ".join(loc)
