@@ -1,3 +1,108 @@
+def sum_odds(start, upto):
+    sum=0
+    if start%2!=1:  start=start+1
+    for i in range(start, upto+1, 2): sum = sum+i
+    return sum
+
+def even_lines(file_name):
+    text=''
+    file=open(file_name, 'r')
+    counter=1
+    for line in file:
+        if counter%2==0:
+            text=text+line
+        counter+=1
+    return text
+
+def str2dict(string):
+    words=string.split(' ')
+    dwords={}
+    for w in words:
+        if(w not in dwords):
+            dwords[w] = 0
+        dwords[w]+=1
+    for key, value in dwords.items():
+        print(key,value)
+
+def count_nt(dna_seq):
+    atgc={}
+    for n in dna_seq:
+        if(n not in atgc):
+            atgc[n]=0
+        atgc[n]+=1
+    print(atgc['A'],atgc['C'],atgc['G'],atgc['T'])
+
+def dna2rna(dna_seq):
+    rna_seq=''
+    for n in dna_seq:
+        if(n=='T'):
+            n='U'
+        rna_seq+=n
+    return rna_seq
+
+def complement(dna_seq):
+    rev_cmpl=''
+    for n in dna_seq[::-1]:
+        match n:
+            case 'A':
+                pair='T'
+            case 'T':
+                pair='A'
+            case 'G':
+                pair='C'
+            case 'C':
+                pair='G'
+        rev_cmpl+=pair
+    return rev_cmpl
+
+def gc(dna_seq):
+    if len(dna_seq)==0:
+        return 0
+    gc=0
+    for nt in dna_seq:
+        if(nt=='G' or nt=='C'):
+            gc+=1;
+    gc*=100
+    gc/=len(dna_seq)
+    return gc
+
+def max_gc(fasta):
+    is_end_record=False
+    is_eof=False
+    seq=''
+    max_gc=0
+    max_id=''
+    f=open(fasta)
+    while(True):
+        line=next(f,'$')
+        line=line.rstrip()
+        if(len(line)==0):
+            line='$'
+        if(line[0]=='>' or line[0]=='$'):
+            seq_gc=gc(seq)
+            seq=''
+            if(seq_gc > max_gc):
+                max_gc=seq_gc
+                max_id=seq_id
+            if(line[0]=='>'):
+                seq_id=line[1:]
+            else:
+                break
+        else:
+            seq+=line
+    f.close()
+    return(max_id+'\n'+str(max_gc))
+
+def hamming(reads_filename):
+    f=open(reads_filename)
+    reads=[f.readline().rstrip(),f.readline().rstrip()]
+    f.close
+    distance=0
+    for i in range(0,len(reads[0])):
+        if(reads[0][i]!=reads[1][i]):
+            distance+=1
+    return distance
+
 def fibonacci_array(months, progeny):
     pairs=[1,1]
     month=1
