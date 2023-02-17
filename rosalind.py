@@ -146,3 +146,23 @@ def fa2gc(fasta):
     f.close
     return max_id,max_gc
 
+def codetable2dic(code_table):
+    code_dic={}
+    f=open(code_table)
+    for code_line in f:
+        code_list=code_line.rstrip().split()
+        for i in range(0,len(code_list),2):
+            code_dic[code_list[i]]=code_list[i+1]
+    f.close
+    return code_dic
+
+def rna2aa(rna_seq, code_table):
+    aa_seq=''
+    code_dic=codetable2dic(code_table)
+    for i in range(0,len(rna_seq),3):
+        codon=rna_seq[i]+rna_seq[i+1]+rna_seq[i+2]
+        aa=code_dic[codon]
+        if(aa=='Stop'):
+            break
+        aa_seq+=aa
+    return aa_seq
