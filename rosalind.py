@@ -185,3 +185,42 @@ def substring(data_file):
 
 def mendel(dom,het,rec):
     return 1-(((rec+het/2)**2-rec-(het/4))/((dom+het+rec)*(dom+het+rec-1)))
+
+def consensus(data_file):
+    consensus=''
+    profile={'A':[],'C':[],'G':[],'T':[]}
+    f=open(data_file)
+    seq_id=f.readline().rstrip()
+    line=f.readline().rstrip()
+    seq=''
+    is_first_entry=True
+    seq_index=0
+    while(line):
+        while(line and line[0] != '>'):
+            seq+=line
+            line=f.readline().rstrip()
+        if(is_first_entry):
+            is_first_entry=False
+            for nt in 'ACGT':
+                profile[nt]=[0]*len(seq)
+        for i in range(0,len(seq)):
+            profile[seq[i]][i]+=1
+        seq=''
+        line=f.readline().rstrip()
+    f.close()
+    consensus=''
+
+    for i in range(0,len(profile['A'])):
+        max_nt=''
+        max_score=-1
+        for nt in 'ACGT':
+            if(profile[nt][i] > max_score):
+                max_score = profile[nt][i]
+                max_nt=nt
+        consensus+=max_nt
+    profile_txt=''
+
+    for nt in 'ACGT':
+        profile_txt=profile_txt+nt+': '+' '.join(list(map(str,profile[nt])))+'\n'
+    return consensus+'\n'+profile_txt
+
