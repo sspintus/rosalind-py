@@ -182,3 +182,6 @@ def substring(data_file):
         if(is_match):
             loc.insert(len(loc),str(shift+1)) #0-based to 1-based
     return " ".join(loc)
+
+def mendel(dom,het,rec):
+    return 1-(((rec+het/2)**2-rec-(het/4))/((dom+het+rec)*(dom+het+rec-1)))
