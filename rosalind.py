@@ -224,3 +224,14 @@ def consensus(data_file):
         profile_txt=profile_txt+nt+': '+' '.join(list(map(str,profile[nt])))+'\n'
     return consensus+'\n'+profile_txt
 
+def fibonacci_mortal(month, lifespan):
+    newborn=[1,0]
+    mature=[0,1]
+    fib=[1,1]
+    for m in range(2, month):
+        newborn.append(mature[m-1])
+        mature.append(mature[m-1]+newborn[m-1])
+        if(m > lifespan - 1):
+            mature[-1]-=newborn[m-lifespan]
+        fib.append(mature[-1]+newborn[-1])
+    return fib[-1]
