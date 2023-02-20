@@ -235,3 +235,15 @@ def fibonacci_mortal(month, lifespan):
             mature[-1]-=newborn[m-lifespan]
         fib.append(mature[-1]+newborn[-1])
     return fib[-1]
+
+def protein_mass(aa_seq,rmasses='masses.txt'):
+    f=open(rmasses)
+    rm_dic={}
+    for line in f:
+        entry=line.split()
+        rm_dic[line.split()[0]]=float(line.split()[1])
+    f.close()
+    pmass=0.0
+    for aa in aa_seq:
+        pmass+=rm_dic[aa]
+    return pmass
