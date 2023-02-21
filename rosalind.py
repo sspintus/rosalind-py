@@ -1,107 +1,4 @@
-def sum_odds(start, upto):
-    sum=0
-    if start%2!=1:  start=start+1
-    for i in range(start, upto+1, 2): sum = sum+i
-    return sum
-
-def even_lines(file_name):
-    text=''
-    file=open(file_name, 'r')
-    counter=1
-    for line in file:
-        if counter%2==0:
-            text=text+line
-        counter+=1
-    return text
-
-def str2dict(string):
-    words=string.split(' ')
-    dwords={}
-    for w in words:
-        if(w not in dwords):
-            dwords[w] = 0
-        dwords[w]+=1
-    for key, value in dwords.items():
-        print(key,value)
-
-def count_nt(dna_seq):
-    atgc={}
-    for n in dna_seq:
-        if(n not in atgc):
-            atgc[n]=0
-        atgc[n]+=1
-    print(atgc['A'],atgc['C'],atgc['G'],atgc['T'])
-
-def dna2rna(dna_seq):
-    rna_seq=''
-    for n in dna_seq:
-        if(n=='T'):
-            n='U'
-        rna_seq+=n
-    return rna_seq
-
-def complement(dna_seq):
-    rev_cmpl=''
-    for n in dna_seq[::-1]:
-        match n:
-            case 'A':
-                pair='T'
-            case 'T':
-                pair='A'
-            case 'G':
-                pair='C'
-            case 'C':
-                pair='G'
-        rev_cmpl+=pair
-    return rev_cmpl
-
-def gc(dna_seq):
-    if len(dna_seq)==0:
-        return 0
-    gc=0
-    for nt in dna_seq:
-        if(nt=='G' or nt=='C'):
-            gc+=1;
-    gc*=100
-    gc/=len(dna_seq)
-    return gc
-
-def max_gc(fasta):
-    is_end_record=False
-    is_eof=False
-    seq=''
-    max_gc=0
-    max_id=''
-    f=open(fasta)
-    while(True):
-        line=next(f,'$')
-        line=line.rstrip()
-        if(len(line)==0):
-            line='$'
-        if(line[0]=='>' or line[0]=='$'):
-            seq_gc=gc(seq)
-            seq=''
-            if(seq_gc > max_gc):
-                max_gc=seq_gc
-                max_id=seq_id
-            if(line[0]=='>'):
-                seq_id=line[1:]
-            else:
-                break
-        else:
-            seq+=line
-    f.close()
-    return(max_id+'\n'+str(max_gc))
-
-def hamming(reads_filename):
-    f=open(reads_filename)
-    reads=[f.readline().rstrip(),f.readline().rstrip()]
-    f.close
-    distance=0
-    for i in range(0,len(reads[0])):
-        if(reads[0][i]!=reads[1][i]):
-            distance+=1
-    return distance
+import math
 
 def fibonacci_array(months, progeny):
     pairs=[1,1]
@@ -113,6 +10,8 @@ def fibonacci_array(months, progeny):
     return pairs[-1]
 
 def fibonacci_12(months, progeny):
+    if(months==1 or months==2):
+        return 1
     F1=1
     F2=1
     month=2
@@ -145,27 +44,6 @@ def fa2gc(fasta):
             line=f.readline().rstrip()
     f.close
     return max_id,max_gc
-
-def codetable2dic(code_table):
-    code_dic={}
-    f=open(code_table)
-    for code_line in f:
-        code_list=code_line.rstrip().split()
-        for i in range(0,len(code_list),2):
-            code_dic[code_list[i]]=code_list[i+1]
-    f.close
-    return code_dic
-
-def rna2aa(rna_seq, code_table):
-    aa_seq=''
-    code_dic=codetable2dic(code_table)
-    for i in range(0,len(rna_seq),3):
-        codon=rna_seq[i]+rna_seq[i+1]+rna_seq[i+2]
-        aa=code_dic[codon]
-        if(aa=='Stop'):
-            break
-        aa_seq+=aa
-    return aa_seq
 
 def substring(data_file):
     f=open(data_file)
@@ -236,6 +114,24 @@ def fibonacci_mortal(month, lifespan):
         fib.append(mature[-1]+newborn[-1])
     return fib[-1]
 
+def overlap_graph(fasta,overlap=3):
+    f=open(fasta)
+    seq1_id=f.readline().rstrip()
+    line1=f.readline().rstrip()
+    seq1=''
+    seq2=''
+    while(line1):
+        while(line1 and line1[0] != '>'):
+            seq1+=line
+            line=f.readline().rstrip()
+        seq2_id=f.readline().rstrip()
+        line2=f.readline()
+        while(line2):
+            while(line2 and line2[0] != '>'):
+                seq2+=line2
+
+    f.close()
+
 def protein_mass(aa_seq,rmasses='masses.txt'):
     f=open(rmasses)
     rm_dic={}
@@ -247,3 +143,14 @@ def protein_mass(aa_seq,rmasses='masses.txt'):
     for aa in aa_seq:
         pmass+=rm_dic[aa]
     return pmass
+
+def random_strings(nt_seq, gc_seq):
+    probs=[]
+    pN={}
+    for p in list(map(float,gc_seq.split())):
+        pN['G']=pN['C']=math.log10(p)-math.log10(2)
+        pN['A']=pN['T']=math.log10(1-p)-math.log10(2)
+        lp=sum(list(map(lambda x: pN[x],nt_seq)))
+        probs.append(str("%.3f" % lp))
+    return " ".join(probs)
+        
