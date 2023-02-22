@@ -114,24 +114,6 @@ def fibonacci_mortal(month, lifespan):
         fib.append(mature[-1]+newborn[-1])
     return fib[-1]
 
-def overlap_graph(fasta,overlap=3):
-    f=open(fasta)
-    seq1_id=f.readline().rstrip()
-    line1=f.readline().rstrip()
-    seq1=''
-    seq2=''
-    while(line1):
-        while(line1 and line1[0] != '>'):
-            seq1+=line
-            line=f.readline().rstrip()
-        seq2_id=f.readline().rstrip()
-        line2=f.readline()
-        while(line2):
-            while(line2 and line2[0] != '>'):
-                seq2+=line2
-
-    f.close()
-
 def protein_mass(aa_seq,rmasses='masses.txt'):
     f=open(rmasses)
     rm_dic={}
