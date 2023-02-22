@@ -1,5 +1,29 @@
 import math
 
+def overlap_graph_dic(fasta, overlap=3):
+    f=open(fasta)
+    entries={}
+    seq_id=''
+    for line in f:
+        line=line.rstrip()
+        if(line[0]=='>'):
+            seq_id=line.lstrip('>')
+            entries[seq_id]=''
+        else:
+            entries[seq_id]+=line
+    f.close()
+    edges=set()
+    for seq_id1 in entries.keys():
+        for seq_id2 in entries.keys():
+            if(seq_id1 == seq_id2):
+                continue
+            if(entries[seq_id1][-3:] == entries[seq_id2][:3]):
+                edges.add(seq_id1+' '+seq_id2)
+            if(entries[seq_id2][-3:] == entries[seq_id1][:3]):
+                edges.add(seq_id2+' '+seq_id1)
+    for e in edges:
+        print(e)
+
 def fibonacci_array(months, progeny):
     pairs=[1,1]
     month=1
