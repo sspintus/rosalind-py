@@ -1,5 +1,24 @@
 import math
 
+def overlap_graph_dic_noset(fasta, overlap=3):
+    f=open(fasta)
+    entries={}
+    seq_id=''
+    for line in f:
+        line=line.rstrip()
+        if(line[0]=='>'):
+            seq_id=line.lstrip('>')
+            entries[seq_id]=''
+        else:
+            entries[seq_id]+=line
+    f.close()
+    for seq_id1 in entries.keys():
+        for seq_id2 in entries.keys():
+            if(seq_id1 == seq_id2):
+                continue
+            if(entries[seq_id1][-3:] == entries[seq_id2][:3]):
+                print(seq_id1+' '+seq_id2)
+
 def overlap_graph_dic(fasta, overlap=3):
     f=open(fasta)
     entries={}
