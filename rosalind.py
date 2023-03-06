@@ -1,5 +1,15 @@
 import math
 
+def expect_offspring(gt_freqs):
+#    AA-AA
+#    AA-Aa
+#    AA-aa
+#    Aa-Aa
+#    Aa-aa
+#    aa-aa
+    probs_A=[1.0, 1.0, 1.0, 0.75, 0.5, 0]
+    return 2*sum([p*f for p,f in zip(probs_A, list(map(float,gt_freqs.split())))])
+
 def overlap_graph_dic_noset(fasta, overlap=3):
     f=open(fasta)
     entries={}
