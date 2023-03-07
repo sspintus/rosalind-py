@@ -1,5 +1,33 @@
 import math
 
+def lcs(string_x, string_y):
+    sx=" "+string_x
+    sy=" "+string_y
+    mat_c=[[-1 for x in range(len(sx))] for y in range(len(sy))]
+    c_max=0
+    x_max=0
+    y_max=0
+    for y in range(len(sy)):
+        for x in range(len(sx)):
+            if(x==0 or y==0 or sy[y]!=sx[x]):
+                mat_c[y][x]=0
+            else:
+                mat_c[y][x]=mat_c[y-1][x-1]+1
+                if(c_max < mat_c[y][x]):
+                    c_max=mat_c[y][x]
+                    y_max=y
+                    x_max=x
+    x=x_max
+    y=y_max
+    c=c_max
+    lcs=""
+    while(c>0):
+        lcs=sx[x]+lcs
+        x=x-1
+        y=y-1
+        c=mat_c[y][x]
+    return lcs
+
 def expect_offspring(gt_freqs):
 #    AA-AA
 #    AA-Aa
