@@ -1,5 +1,19 @@
 import math
 
+def fa2dic(fasta):
+    f=open(fasta)
+    entries={}
+    seq_id=''
+    for line in f:
+        line=line.rstrip()
+        if(line[0]=='>'):
+            seq_id=line.lstrip('>')
+            entries[seq_id]=''
+        else:
+            entries[seq_id]+=line
+    f.close()
+    return entries
+
 def lcs(string_x, string_y):
     sx=" "+string_x
     sy=" "+string_y
@@ -27,6 +41,13 @@ def lcs(string_x, string_y):
         y=y-1
         c=mat_c[y][x]
     return lcs
+
+def lcsm(fasta):
+    entries=fa2dic(fasta)
+    motif=entries.values()[0]
+    for sid in entries:
+        motif=lcs(motif,entries[sid])
+    return motif
 
 def expect_offspring(gt_freqs):
 #    AA-AA
