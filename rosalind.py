@@ -44,7 +44,7 @@ def lcs(string_x, string_y):
 
 def lcsm(fasta):
     entries=fa2dic(fasta)
-    motif=entries.values()[0]
+    motif=list(entries.values())[0]
     for sid in entries:
         motif=lcs(motif,entries[sid])
     return motif
